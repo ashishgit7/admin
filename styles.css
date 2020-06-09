@@ -173,7 +173,7 @@ input:checked + .slider:before {
   animation-duration: 0.4s
 }
 .close-btn {
-  float: right; 
+  float: right !important; 
   color: lightgray; 
   font-size: 24px;  
   font-weight: bold;

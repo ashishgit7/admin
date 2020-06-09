@@ -56,7 +56,7 @@
   </div>
 
 
-  <i id="back_btn" style="position: absolute;top:7%;left:7%;font-size: 30px;display: none;" class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+  <i id="back_btn" onclick="document.getElementById('rent_div').style.display = 'none';document.getElementById('userDiv').style.display = 'block';" style="position: absolute;top:7%;left:7%;font-size: 30px;display: none;" class="fa fa-arrow-circle-left" aria-hidden="true"></i>
 
 
 
@@ -110,24 +110,48 @@
 
 
     <div id="rent_div" style="display: none;width:85%;margin:100px auto;">
-
-
-     <table class="table table-striped table-dark">
+     <table class="table ">
       <thead>
         <tr>
-          <th scope="col">#</th>
-          <th scope="col">First</th>
-          <th scope="col">Last</th>
+          <th  style="text-align: center;"><button onclick="fillAmount()" id="payRent" class="btn btn-dark" type=""></button></th>
         </tr>
       </thead>
-      <tbody>
+      <tbody style="">
         <tr>
-          <th scope="row">1</th>
-          <td>Update rent Paid</td>
-          <td>rent Due</td>
-        </tr>
-      </tbody>
-    </table>
+            <td id="amountfill"  style="text-align: center; display: none;"><input style="padding-left: 5px;" id="amountPaid" type="text" placeholder="Enter Amount">
+              <br><br>
+              <select id="paymedium" >
+                <option value="cash">Cash</option>
+                <option value="online">Digital</option>
+              </select>
+              <br><br>
+              <button type="" onclick="payRent()" class="btn btn-danger">Submit</button></td>
+          </tr>
+
+          <tr id="paidData">
+
+          </tr>
+        </tbody>
+      </table>
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   </div>
@@ -135,49 +159,30 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-
-
-
-
-<script>
-  const vm = new Vue({
-    el: '#app',
-    data: {
-      email: '',
-      password: '',
-      hidePassword: true
-    },
-    computed: {
-      passwordType() {
-        return this.hidePassword ? 'password' : 'text'
+  <script>
+    const vm = new Vue({
+      el: '#app',
+      data: {
+        email: '',
+        password: '',
+        hidePassword: true
       },
-      passwordIcon() {
-        return this.hidePassword ? 'fa-eye' : 'fa-eye-slash'
-      }
-    },
-    methods: {
-      doLogin() {
-
-
-        if(this.email==='me@gmail.com' && this.password === '123'){
-          alert('Logged in');
+      computed: {
+        passwordType() {
+          return this.hidePassword ? 'password' : 'text'
+        },
+        passwordIcon() {
+          return this.hidePassword ? 'fa-eye' : 'fa-eye-slash'
         }
-        else
+      },
+      methods: {
+        doLogin() {
+
+
+          if(this.email==='me@gmail.com' && this.password === '123'){
+            alert('Logged in');
+          }
+          else
             // alert('False Attemp');
           document.getElementById('userDiv').style.display = 'block';
           document.getElementById('login').style.display = 'none';
