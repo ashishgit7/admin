@@ -50,13 +50,13 @@
         </select>
         <br>
         <br>
-        <button type="submit" id="submit_user">Submit</button>
+        <button class="btn btn-danger" type="submit" id="submit_user">Submit</button>
       </form>
     </div>
   </div>
 
 
-  <i id="back_btn" onclick="document.getElementById('rent_div').style.display = 'none';document.getElementById('userDiv').style.display = 'block';" style="position: absolute;top:7%;left:7%;font-size: 30px;display: none;" class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+  <i id="back_btn" onclick="back()" style="position: absolute;top:7%;left:7%;font-size: 30px;display: none;" class="fa fa-arrow-circle-left" aria-hidden="true"></i>
 
 
 
@@ -77,7 +77,7 @@
           <i class="fas" :class="[passwordIcon]" @click="hidePassword = !hidePassword"></i>
           <input :type="passwordType" id="password" v-model="password" placeholder="**********">
 
-          <button type="submit">Log in</button>
+          <button  type="submit">Log in</button>
         </form>
       </div>
     </div>
@@ -87,68 +87,30 @@
 
     <div id="userDiv" style="display: none;background-color: #e2e2e5;height:100%;z-index:-1;">
       <ul style="margin: 0 auto;padding-top:30px;display: block;text-align: center;">
-        <li style="display: inline;"><button id="users_btn" onclick="showUsers()" style="background-color:white;border:0;outline:0;font-weight: 700;font-size: 18px;width:150px;height:40px;">Users</button></li>
-        <li style="display: inline;"><button id="request_btn" onclick="showRequests()" style="background-color:rgba(0,0,0,0.2);border:0;outline:0;font-weight: 700;font-size: 18px;width:150px;height:40px;">Requests</button></li>
+        <li style="display: inline;padding-right: 20px;"><button id="users_btn" onclick="showUsers()" style="background-color:white;border:0;outline:0;font-weight: 700;font-size: 18px;width:150px;height:40px;">Users</button></li>
+        <li style="display: inline;padding-left: 20px;"><button id="request_btn" onclick="showRequests()" style="background-color:rgba(0,0,0,0.2);border:0;outline:0;font-weight: 700;font-size: 18px;width:150px;height:40px;">Requests</button></li>
       </ul>
+
       <div id="userList" style="width:80%;margin:0px auto;">
-     <!--    <div style="box-shadow: 1px 5px 5px rgba(0,0,0,0.5);height:80px;width:100%;margin:20px auto;background-color: white;border-right: 10px;position: relative;">
-          <img src="userimg.png"  style="margin:0;vertical-align: middle;height: 50%;margin-top:17px;margin-left: 30px;" alt="">
-          <h4 style="position:absolute;top:35%;left:30%;">Shubham</h4>
-          <h5 style="position:absolute;top:35%;left:50%;">me@gmail.com</h5>
-
-          <label style="margin-top:28px;margin-left:30px;position: absolute;" class="switch">
-            <input type="checkbox">
-            <span class="slider"></span>
-          </label>
-          <h6 style="position:absolute;margin-top:-25px;margin-left:160px;">Unregistered</h6>
-
-          <i style="position:absolute;top:50%;right:5%;transform: translate(0,-50%);" class="fa fa-chevron-right" aria-hidden="true"></i>
-        </div> -->
+        <!-- from db -->
       </div>
-    </div>
 
+      <div id="requestDiv" style="display: none;background-color: #e2e2e5;height:100%;z-index:-1;">
+       <ul style="margin: 40px auto;padding-top:30px;display: block;text-align: center;">
+        <li style="list-style: none;margin-bottom:10px; "><button id="mainta_btn" onclick="fetchData()"  style="background-color:white;border:0;outline:0;font-weight: 700;font-size: 18px;min-width:150px;height:40px;">Maintenance Requests</button></li>
+        <li style="list-style: none;margin-top:10px "><button id="exit_req_btn" onclick="showExitRequests()"  style="background-color:rgba(0,0,0,0.2);border:0;outline:0;font-weight: 700;font-size: 18px;width:150px;height:40px;">Exit Requests</button></li>
+      </ul>
 
+      <div id="status_div">
+        <!-- data from db -->
+      </div>
 
-    <div id="rent_div" style="display: none;width:85%;margin:100px auto;">
-     <table class="table ">
-      <thead>
-        <tr>
-          <th  style="text-align: center;"><button onclick="fillAmount()" id="payRent" class="btn btn-dark" type=""></button></th>
-        </tr>
-      </thead>
-      <tbody style="">
-        <tr>
-            <td id="amountfill"  style="text-align: center; display: none;"><input style="padding-left: 5px;" id="amountPaid" type="text" placeholder="Enter Amount">
-              <br><br>
-              <select id="paymedium" >
-                <option value="cash">Cash</option>
-                <option value="online">Digital</option>
-              </select>
-              <br><br>
-              <button type="" onclick="payRent()" class="btn btn-danger">Submit</button></td>
-          </tr>
-
-          <tr id="paidData">
-
-          </tr>
-        </tbody>
-      </table>
+      <div id="exitRequest">
+        <!-- data from db -->
+      </div>
 
 
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -159,30 +121,87 @@
 
 
 
-  <script>
-    const vm = new Vue({
-      el: '#app',
-      data: {
-        email: '',
-        password: '',
-        hidePassword: true
+
+
+  <div id="rent_div" style="display: none;width:85%;margin:100px auto;">
+   <table class="table ">
+    <thead>
+      <tr>
+        <th>
+          <button id="back_btn" onclick="document.getElementById('modal-btn').click()" style="font-size: 20px;" class="btn btn-info" aria-hidden="true">Set Due Amount</button>
+        </th>
+      </tr>
+      <tr>
+        <th  style="text-align: center;"><button onclick="fillAmount()" id="payRent" class="btn btn-dark" type=""></button></th>
+      </tr>
+    </thead>
+    <tbody style="">
+      <tr>
+        <td id="amountfill"  style="text-align: center; display: none;"><input style="padding-left: 5px;" id="amountPaid" type="number" required placeholder="Enter Amount">
+          <br><br>
+          <select id="paymedium" >
+            <option value="cash">Cash</option>
+            <option value="online">Digital</option>
+          </select>
+          <br><br>
+          <button type="" onclick="payRent()" class="btn btn-danger">Submit</button>
+        </td>
+      </tr>
+
+      <tr id="paidData">
+
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+<script>
+  const vm = new Vue({
+    el: '#app',
+    data: {
+      email: '',
+      password: '',
+      hidePassword: true
+    },
+    computed: {
+      passwordType() {
+        return this.hidePassword ? 'password' : 'text'
       },
-      computed: {
-        passwordType() {
-          return this.hidePassword ? 'password' : 'text'
-        },
-        passwordIcon() {
-          return this.hidePassword ? 'fa-eye' : 'fa-eye-slash'
+      passwordIcon() {
+        return this.hidePassword ? 'fa-eye' : 'fa-eye-slash'
+      }
+    },
+    methods: {
+      doLogin() {
+
+
+        if(this.email==='me@gmail.com' && this.password === '123'){
+          alert('Logged in');
         }
-      },
-      methods: {
-        doLogin() {
-
-
-          if(this.email==='me@gmail.com' && this.password === '123'){
-            alert('Logged in');
-          }
-          else
+        else
             // alert('False Attemp');
           document.getElementById('userDiv').style.display = 'block';
           document.getElementById('login').style.display = 'none';
