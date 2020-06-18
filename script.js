@@ -394,9 +394,13 @@ async function submitDue(){  //update submit amount
 	var myFirebaseFirestoreTimestampFromDate = firebase.firestore.Timestamp.fromDate(new Date(document.getElementById('lastDueDate').value.toString()));
 	let lastDate = myFirebaseFirestoreTimestampFromDate.toDate()
 	let name = "";
-
+	let phone = "";
 	await firebase.firestore().collection('userProfile').doc(clickedBox).get().then( res =>{
 		name = res.data().name;
+		phone = res.data().personal.mobile
+	}).catch(err =>{
+		alert('Phone number not found');
+
 	})
 
 
@@ -416,6 +420,18 @@ async function submitDue(){  //update submit amount
 			firebase.firestore().collection('rentDue').doc(clickedBox).update({
 				total:document.getElementById('amtDue').value
 			})
+
+			var msg = `
+
+			Your rent for this month is due Rs.${  document.getElementById('amtDue').value }
+			Please pay before 5th of ${ lastDate.toString().substring(4, 7) }
+			To avoid late fine fees
+			Please ignore if already paid.
+
+			`
+			if(phone!=="")
+			sendSMS(phone,msg)
+
 			
 
 		}else{
@@ -435,6 +451,13 @@ async function submitDue(){  //update submit amount
 			})
 
 
+			var msg = `
+
+			Your rent for this month is due Rs.${  document.getElementById('amtDue').value+" " } Please pay before 5th of ${ lastDate.toString().substring(4, 7) } To avoid late fine fees, Please ignore if already paid.
+
+			`
+			if(phone!=="" && phone!=undefined)
+			sendSMS(phone,msg)
 			
 		}
 
@@ -449,6 +472,20 @@ async function submitDue(){  //update submit amount
 
 
 
+}
+
+function sendSMS(num,msg){
+	var settings = {
+		"async": true,
+		"crossDomain": true,
+		"url": `https://www.fast2sms.com/dev/bulk?authorization=bLhTVlxWKv8sYJOynkBMCQPU2meNS3uAXjrZ5D47c6gqpi0a1obPWLc8ywd2tAZ1YgjN9GSBC5HnF0VI&sender_id=ALERT&message=${msg}&language=english&route=p&numbers=${num}`,
+		"method": "GET"
+	}
+
+	$.ajax(settings).done(function (response) {
+		console.log(response);
+		return;
+	});
 }
 
 
