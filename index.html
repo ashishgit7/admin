@@ -33,6 +33,10 @@
 </head>
 <body>
 
+	<div style="position: absolute;top:5%;right:10%">
+		<i id="nextAdmin" style="font-size: 25px;cursor: pointer;display: none;" onclick="showNextAdmin()" class="fa fa-forward" aria-hidden="true"></i>
+	</div>
+
   <button id="modal-btn" style="display: none;"> click me</button>
   <div class="modal">
     <div class="modal-content" style="z-index: 1000 !important;">
@@ -206,9 +210,15 @@
           document.getElementById('userDiv').style.display = 'block';
           document.getElementById('login').style.display = 'none';
           document.getElementById('users_btn').click();
+          document.getElementById('nextAdmin').style.display = 'initial'
         }
       }
     })
+  </script>
+  <script>
+  	function showNextAdmin(){
+  		window.open("admin/index.html","_blank");
+  	}
   </script>
   <script src="script.js"></script>
 </body>
